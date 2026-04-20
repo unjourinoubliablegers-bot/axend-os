@@ -1,0 +1,18 @@
+{
+  "entries": [
+    {
+      "id": "proof-seed-001",
+      "lotId": "LOT-00",
+      "kind": "seed",
+      "status": "pending",
+      "path": "axend/proofs/latest-proof.json",
+      "summary": "Ajouter ici la première preuve réelle.",
+      "items": [
+        {
+          "label": "Déposer une première preuve réelle",
+          "status": "pending"
+        }
+      ]
+    }
+  ]
+}

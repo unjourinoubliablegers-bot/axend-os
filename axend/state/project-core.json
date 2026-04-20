@@ -1,0 +1,20 @@
+{
+  "projectName": "AXEND OS",
+  "mission": "Construire un cockpit d'exécution pour bâtir de vrais logiciels avec l'IA sans se perdre.",
+  "primaryObjective": "Livrer une V1 desktop/web local-first utilisable.",
+  "stack": [
+    "Tauri",
+    "React",
+    "TypeScript",
+    "Vite",
+    "Rust",
+    "Ollama"
+  ],
+  "rules": [
+    "Un seul projet actif",
+    "Un seul lot actif",
+    "Une seule prochaine action",
+    "Pas de lot suivant sans preuve"
+  ],
+  "targetUser": "Débutant ou intermédiaire qui veut construire un vrai logiciel sans se disperser."
+}

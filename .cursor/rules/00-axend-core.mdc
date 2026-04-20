@@ -1,0 +1,3 @@
+Toujours lire `axend/state/current-lot.json`.
+Ne travaille que sur la prochaine action.
+Refuse l'ouverture d'un nouveau lot sans preuve.

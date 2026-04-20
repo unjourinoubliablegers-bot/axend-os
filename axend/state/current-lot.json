@@ -1,0 +1,24 @@
+{
+  "lotId": "LOT-00",
+  "title": "Vérifier et lancer le starter runnable",
+  "goal": "Obtenir une première exécution web puis desktop de la base AXEND.",
+  "definitionOfDone": [
+    "pnpm install exécuté",
+    "pnpm axend:doctor OK",
+    "pnpm dev lancé",
+    "pnpm tauri:dev lancé sur machine utilisateur"
+  ],
+  "status": "clear",
+  "nextAction": "Lancer pnpm install puis pnpm axend:doctor",
+  "proofExpected": [
+    "build OK ou tauri dev OK",
+    "capture de l'interface ouverte"
+  ],
+  "blocker": "",
+  "filesInScope": [
+    "package.json",
+    "src/App.tsx",
+    "src-tauri/tauri.conf.json",
+    "axend/state/current-lot.json"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "id": "proof-seed-001",
+  "lotId": "LOT-00",
+  "kind": "seed",
+  "status": "pending",
+  "summary": "Ajouter ici la première preuve réelle.",
+  "items": [
+    {
+      "label": "Déposer une première preuve réelle",
+      "status": "pending"
+    }
+  ]
+}

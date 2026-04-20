@@ -1,0 +1,10 @@
+node_modules
+dist
+target
+.vscode
+.DS_Store
+.env
+.env.local
+*.log
+coverage
+src-tauri/target

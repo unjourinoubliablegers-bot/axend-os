@@ -1,0 +1,49 @@
+{
+  "name": "axend-os",
+  "version": "0.8.0",
+  "private": true,
+  "description": "AXEND OS — runnable desktop/web local-first starter v8 finalized",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 1420",
+    "build": "tsc && vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 4173",
+    "type-check": "tsc --noEmit",
+    "tauri": "tauri",
+    "tauri:dev": "tauri dev",
+    "tauri:build": "tauri build",
+    "axend:init": "node scripts/init-axend-repo.mjs",
+    "axend:doctor": "node scripts/app-doctor.mjs",
+    "axend:handoff": "node scripts/generate-handoff.mjs",
+    "axend:restart": "node scripts/generate-restart-pack.mjs",
+    "axend:proof": "node scripts/validate-proof.mjs",
+    "axend:next": "node scripts/route-next-action.mjs",
+    "axend:ollama:restart": "node scripts/ollama-router.mjs restart",
+    "axend:ollama:next": "node scripts/ollama-router.mjs next",
+    "axend:validate-lot": "node scripts/complete-lot-validation.mjs",
+    "axend:smoke": "node scripts/smoke-tests.mjs",
+    "check:all": "pnpm axend:doctor --strict && pnpm lint && pnpm format:check && pnpm test && pnpm build && pnpm axend:smoke",
+    "lint": "node scripts/lint-no-control-chars.mjs && node scripts/validate-state.mjs && node scripts/check-source-syntax.mjs && node scripts/check-metadata-consistency.mjs && node scripts/check-reference-links.mjs",
+    "format:check": "node scripts/check-format.mjs",
+    "test": "node --test scripts/tests/state-files.test.mjs scripts/tests/repo-integrity.test.mjs scripts/tests/lot-validation.test.mjs scripts/tests/metadata-consistency.test.mjs",
+    "axend:backup": "node scripts/create-backup.mjs"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "@tauri-apps/api": "^2.0.0"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.0.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.1",
+    "typescript": "^5.6.3",
+    "vite": "^6.0.1"
+  },
+  "packageManager": "pnpm@10.11.0",
+  "engines": {
+    "node": ">=20.19.0",
+    "pnpm": ">=9"
+  }
+}

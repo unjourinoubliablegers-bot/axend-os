@@ -86,7 +86,9 @@ export default function App() {
   }, [lot]);
 
   const latestProof = proof.entries[proof.entries.length - 1];
-
+  const blockerText = lot.blocker.trim() || 'Aucun';
+  const proofExpectedText =
+    lot.proofExpected.length > 0 ? lot.proofExpected.join(' • ') : 'Aucune';
   function updateLot(field: keyof CurrentLot, value: string) {
     setLot((prev) => ({ ...prev, [field]: value }));
     if (field === 'blocker') {
@@ -196,27 +198,71 @@ export default function App() {
         </Panel>
 
         <Panel title="Lot actif" subtitle="Un seul lot, un seul cap">
-          <div className="field">
-            <label>Titre lot</label>
-            <input value={lot.title} onChange={(e) => updateLot('title', e.target.value)} />
-          </div>
-          <div className="field">
-            <label>Objectif du lot</label>
-            <textarea value={lot.goal} onChange={(e) => updateLot('goal', e.target.value)} />
-          </div>
-          <div className="field">
-            <label>Prochaine action</label>
-            <textarea value={lot.nextAction} onChange={(e) => updateLot('nextAction', e.target.value)} />
-          </div>
-          <div className="field">
-            <label>Blocage</label>
-            <textarea value={lot.blocker} onChange={(e) => updateLot('blocker', e.target.value)} />
-          </div>
-          <div className="chip-wrap">
-            {lot.filesInScope.map((file) => <span key={file} className="chip">{file}</span>)}
-          </div>
-        </Panel>
+  <div className="lot-summary-grid">
+    <div className="lot-summary-card">
+      <span className="meta-label">Lot actif</span>
+      <strong className="meta-value">{lot.lotId}</strong>
+    </div>
 
+    <div className="lot-summary-card">
+      <span className="meta-label">Titre</span>
+      <strong className="meta-value">{lot.title}</strong>
+    </div>
+
+    <div className="lot-summary-card">
+      <span className="meta-label">Statut</span>
+      <div className="meta-badge-row">
+        <Badge value={lot.status} />
+      </div>
+    </div>
+
+    <div className="lot-summary-card wide">
+      <span className="meta-label">Objectif</span>
+      <strong className="meta-value multiline">{lot.goal || 'Non défini'}</strong>
+    </div>
+
+    <div className="lot-summary-card wide">
+      <span className="meta-label">Prochaine action</span>
+      <strong className="meta-value multiline">{lot.nextAction || 'Non définie'}</strong>
+    </div>
+
+    <div className="lot-summary-card wide">
+      <span className="meta-label">Preuve attendue</span>
+      <strong className="meta-value multiline">{proofExpectedText}</strong>
+    </div>
+
+    <div className="lot-summary-card wide blocker-card">
+      <span className="meta-label">Blocage</span>
+      <strong className="meta-value multiline">{blockerText}</strong>
+    </div>
+  </div>
+
+  <div className="field">
+    <label>Titre lot</label>
+    <input value={lot.title} onChange={(e) => updateLot('title', e.target.value)} />
+  </div>
+
+  <div className="field">
+    <label>Objectif du lot</label>
+    <textarea value={lot.goal} onChange={(e) => updateLot('goal', e.target.value)} />
+  </div>
+
+  <div className="field">
+    <label>Prochaine action</label>
+    <textarea value={lot.nextAction} onChange={(e) => updateLot('nextAction', e.target.value)} />
+  </div>
+
+  <div className="field">
+    <label>Blocage</label>
+    <textarea value={lot.blocker} onChange={(e) => updateLot('blocker', e.target.value)} />
+  </div>
+
+  <div className="chip-wrap">
+    {lot.filesInScope.map((file) => (
+      <span key={file} className="chip">{file}</span>
+    ))}
+  </div>
+</Panel>
         <Panel title="Definition of Done" subtitle="Le lot n'est pas fini sans critères clairs">
           <ol className="clean-list">
             {lot.definitionOfDone.map((item) => <li key={item}>{item}</li>)}

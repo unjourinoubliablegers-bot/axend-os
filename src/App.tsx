@@ -55,7 +55,16 @@ export default function App() {
       ]);
       if (cancelled) return;
       setCore(loaded.snapshot.core);
-      setStatus(loaded.snapshot.status);
+
+      setStatus({
+        ...(loaded.snapshot.status as ProjectStatus),
+        currentValidatedProofId: loaded.snapshot.status.currentValidatedProofId ?? null,
+        currentLotCompletedAt: loaded.snapshot.status.currentLotCompletedAt ?? null,
+        closedLots: Array.isArray(loaded.snapshot.status.closedLots)
+          ? loaded.snapshot.status.closedLots
+          : []
+      });
+      
       setLot(loaded.snapshot.lot);
       setProof(loaded.snapshot.proof);
       setRestartPack(restart);
@@ -106,6 +115,7 @@ export default function App() {
 
 const latestProofItemsCount = latestProof?.items?.length ?? 0;
 const closingProofId = status.currentValidatedProofId ?? 'Aucune';
+const closedLots = status.closedLots ?? [];
 const closingDate = status.currentLotCompletedAt ?? 'Non clôturé';
   const blockerText = lot.blocker.trim() || 'Aucun';
   const proofExpectedText =
@@ -203,6 +213,34 @@ const lastValidatedProofText = status.lastValidatedProofAt ?? 'Aucune';
   function prepareNextLot() {
     const nextLotId = getNextLotId(lot.lotId);
   
+    setStatus((prev) => {
+      const previousClosedLots = Array.isArray(prev.closedLots) ? prev.closedLots : [];
+      const shouldArchiveCurrentLot = lot.status === 'validated';
+  
+      const nextClosedLots = shouldArchiveCurrentLot
+        ? [
+            ...previousClosedLots,
+            {
+              lotId: lot.lotId,
+              title: lot.title,
+              status: lot.status,
+              closedAt: prev.currentLotCompletedAt,
+              proofId: prev.currentValidatedProofId,
+              summary: lot.goal || lot.nextAction || 'Lot clôturé'
+            }
+          ]
+        : previousClosedLots;
+  
+      return {
+        ...prev,
+        currentLotId: nextLotId,
+        currentLotStatus: 'clear',
+        currentValidatedProofId: null,
+        currentLotCompletedAt: null,
+        closedLots: nextClosedLots
+      };
+    });
+  
     setLot((prev) => ({
       ...prev,
       lotId: nextLotId,
@@ -214,14 +252,6 @@ const lastValidatedProofText = status.lastValidatedProofAt ?? 'Aucune';
       proofExpected: [],
       blocker: '',
       filesInScope: []
-    }));
-  
-    setStatus((prev) => ({
-      ...prev,
-      currentLotId: nextLotId,
-      currentLotStatus: 'clear',
-      currentValidatedProofId: null,
-      currentLotCompletedAt: null
     }));
   }
  
@@ -510,7 +540,26 @@ const lastValidatedProofText = status.lastValidatedProofAt ?? 'Aucune';
     </p>
   </div>
 </Panel>  
+<Panel title="Lots fermés" subtitle="Historique des lots validés">
+  {closedLots.length === 0 ? (
+    <p className="small">Aucun lot fermé pour le moment.</p>
+  ) : (
+    <ul className="clean-list">
+      {[...closedLots].reverse().map((entry) => (
+        <li key={`${entry.lotId}-${entry.closedAt ?? 'open'}`} className="proof-entry">
+          <div className="proof-entry-head">
+            <strong>{entry.lotId} — {entry.title}</strong>
+            <Badge value={LOT_STATUS_LABELS[entry.status as LotStatus]} />
+          </div>
 
+          <p className="small">Résumé : {entry.summary}</p>
+          <p className="small">Preuve : {entry.proofId ?? 'Aucune'}</p>
+          <p className="small">Clôturé le : {entry.closedAt ?? 'Non renseigné'}</p>
+        </li>
+      ))}
+    </ul>
+  )}
+</Panel>
         <Panel title="Connexions outils" subtitle="Qui fait quoi dans le stack">
           <ul className="clean-list">
             <li><strong>ChatGPT :</strong> cadrage, arbitrage, lot, décision</li>

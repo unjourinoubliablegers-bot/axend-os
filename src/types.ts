@@ -5,6 +5,15 @@ export type LotStatus =
   | 'ready_for_validation'
   | 'validated';
 
+export type ClosedLotEntry = {
+  lotId: string;
+  title: string;
+  status: LotStatus;
+  closedAt: string | null;
+  proofId: string | null;
+  summary: string;
+};
+
 export type ProjectCore = {
   projectName: string;
   mission: string;
@@ -22,6 +31,7 @@ export type ProjectStatus = {
   lastValidatedProofAt: string | null;
   currentValidatedProofId: string | null;
   currentLotCompletedAt: string | null;
+  closedLots: ClosedLotEntry[];
 };
 
 export type CurrentLot = {

@@ -92,6 +92,11 @@ export default function App() {
   }, [lot]);
 
   const latestProof = proof.entries[proof.entries.length - 1];
+  const latestValidatedProof = [...proof.entries]
+  .reverse()
+  .find((entry) => entry.status === 'validated');
+
+const latestProofItemsCount = latestProof?.items?.length ?? 0;
   const blockerText = lot.blocker.trim() || 'Aucun';
   const proofExpectedText =
     lot.proofExpected.length > 0 ? lot.proofExpected.join(' • ') : 'Aucune';
@@ -308,26 +313,82 @@ export default function App() {
         </Panel>
 
         <Panel title="Preuves" subtitle="Fin du faux avancement">
-          <div className="button-row">
-            <button onClick={addProof}>Ajouter une preuve</button>
-            <button className="secondary" onClick={markLatestValidated}>Valider la dernière preuve</button>
-          </div>
-          <ul className="clean-list">
-            {proof.entries.map((entry) => (
-              <li key={entry.id}>
-                <strong>{entry.summary}</strong><br />
-                <small>{entry.path}</small><br />
-                <Badge value={entry.status} />
-                {entry.items && entry.items.length > 0 ? (
-                  <ul className="clean-list nested">
-                    {entry.items.map((item) => <li key={`${entry.id}-${item.label}`}>{item.label} — {item.status}</li>)}
-                  </ul>
-                ) : null}
+  <div className="proof-summary-grid">
+    <div className="proof-summary-card">
+      <span className="meta-label">Dernière preuve</span>
+      <strong className="meta-value">
+        {latestProof ? latestProof.id : 'Aucune'}
+      </strong>
+    </div>
+
+    <div className="proof-summary-card">
+      <span className="meta-label">Statut</span>
+      <div className="meta-badge-row">
+        <Badge value={latestProof ? latestProof.status : 'Aucune'} />
+      </div>
+    </div>
+
+    <div className="proof-summary-card">
+      <span className="meta-label">Éléments</span>
+      <strong className="meta-value">{latestProofItemsCount}</strong>
+    </div>
+
+    <div className="proof-summary-card wide">
+      <span className="meta-label">Résumé</span>
+      <strong className="meta-value multiline">
+        {latestProof ? latestProof.summary : 'Aucune preuve enregistrée'}
+      </strong>
+    </div>
+
+    <div className="proof-summary-card wide">
+      <span className="meta-label">Dernière preuve validée</span>
+      <strong className="meta-value multiline">
+        {latestValidatedProof
+          ? `${latestValidatedProof.id} — ${latestValidatedProof.validatedAt ?? 'date non renseignée'}`
+          : 'Aucune preuve validée'}
+      </strong>
+    </div>
+  </div>
+
+  <div className="button-row">
+    <button onClick={addProof}>Ajouter une preuve</button>
+    <button className="secondary" onClick={markLatestValidated}>
+      Valider la dernière preuve
+    </button>
+  </div>
+
+  <ul className="clean-list">
+    {proof.entries.map((entry) => (
+      <li key={entry.id} className="proof-entry">
+        <div className="proof-entry-head">
+          <strong>{entry.summary}</strong>
+          <Badge value={entry.status} />
+        </div>
+
+        <p className="small">ID : {entry.id}</p>
+        <p className="small">Chemin : {entry.path}</p>
+        <p className="small">
+          Créée : {entry.createdAt ?? 'date non renseignée'}
+        </p>
+        <p className="small">
+          Validée : {entry.validatedAt ?? 'pas encore'}
+        </p>
+
+        {entry.items && entry.items.length > 0 ? (
+          <ul className="clean-list nested">
+            {entry.items.map((item) => (
+              <li key={`${entry.id}-${item.label}`}>
+                {item.label} — {item.status}
               </li>
             ))}
           </ul>
-          {latestProof ? <p className="small">Dernière preuve : {latestProof.id}</p> : null}
-        </Panel>
+        ) : (
+          <p className="small">Aucun item de preuve.</p>
+        )}
+      </li>
+    ))}
+  </ul>
+</Panel>
 
         <Panel title="Restart Pack" subtitle="Reprise rapide">
           <div className="restart-box">

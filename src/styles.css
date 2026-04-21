@@ -101,3 +101,41 @@ select {
   background: rgba(255, 255, 255, 0.04);
   color: inherit;
 }
+.proof-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.proof-summary-card {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.proof-summary-card.wide {
+  grid-column: 1 / -1;
+}
+
+.proof-entry {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 10px;
+}
+
+.proof-entry-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.small {
+  font-size: 0.9rem;
+  opacity: 0.75;
+}

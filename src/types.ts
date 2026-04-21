@@ -20,6 +20,8 @@ export type ProjectStatus = {
   currentLotStatus: LotStatus;
   nextMilestone: string;
   lastValidatedProofAt: string | null;
+  currentValidatedProofId: string | null;
+  currentLotCompletedAt: string | null;
 };
 
 export type CurrentLot = {

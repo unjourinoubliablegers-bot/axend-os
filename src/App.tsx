@@ -97,6 +97,8 @@ export default function App() {
   .find((entry) => entry.status === 'validated');
 
 const latestProofItemsCount = latestProof?.items?.length ?? 0;
+const closingProofId = status.currentValidatedProofId ?? 'Aucune';
+const closingDate = status.currentLotCompletedAt ?? 'Non clôturé';
   const blockerText = lot.blocker.trim() || 'Aucun';
   const proofExpectedText =
     lot.proofExpected.length > 0 ? lot.proofExpected.join(' • ') : 'Aucune';
@@ -148,7 +150,10 @@ const lastValidatedProofText = status.lastValidatedProofAt ?? 'Aucune';
 
   function markLatestValidated() {
     if (!proof.entries.length) return;
+  
+    const latestEntry = proof.entries[proof.entries.length - 1];
     const validatedAt = new Date().toISOString();
+  
     setProof((prev) => ({
       entries: prev.entries.map((entry, index) =>
         index === prev.entries.length - 1
@@ -156,18 +161,35 @@ const lastValidatedProofText = status.lastValidatedProofAt ?? 'Aucune';
               ...entry,
               status: 'validated',
               validatedAt,
-              items: entry.items && entry.items.length > 0
-                ? entry.items.map((item) => ({ ...item, status: 'done' as const }))
-                : [{ label: 'Validation manuelle effectuée depuis l’interface', status: 'done' as const }]
+              items:
+                entry.items && entry.items.length > 0
+                  ? entry.items.map((item) => ({
+                      ...item,
+                      status: 'done' as const
+                    }))
+                  : [
+                      {
+                        label: 'Validation manuelle effectuée depuis l’interface',
+                        status: 'done' as const
+                      }
+                    ]
             }
           : entry
       )
     }));
-    setLot((prev) => ({ ...prev, status: 'validated', blocker: '' }));
+  
+    setLot((prev) => ({
+      ...prev,
+      status: 'validated',
+      blocker: ''
+    }));
+  
     setStatus((prev) => ({
       ...prev,
       lastValidatedProofAt: validatedAt,
-      currentLotStatus: 'validated'
+      currentLotStatus: 'validated',
+      currentValidatedProofId: latestEntry.id,
+      currentLotCompletedAt: validatedAt
     }));
   }
 
@@ -224,6 +246,8 @@ const lastValidatedProofText = status.lastValidatedProofAt ?? 'Aucune';
   <li><strong>Santé du lot :</strong> {health}/5</li>
   <li><strong>Prochaine action :</strong> {lot.nextAction || 'Non définie'}</li>
   <li><strong>Dernière preuve validée :</strong> {status.lastValidatedProofAt ?? 'Aucune'}</li>
+  <li><strong>Preuve de fermeture :</strong> {closingProofId}</li>
+<li><strong>Lot clôturé le :</strong> {closingDate}</li>
   <li><strong>Dernière sauvegarde :</strong> {lastSavedAt ?? 'Pas encore'}</li>
 </ul>
         </Panel>

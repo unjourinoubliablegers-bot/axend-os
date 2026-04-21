@@ -8,10 +8,12 @@ import type { ProjectCore, ProjectStatus, CurrentLot, ProofLog } from './types';
 export const seedProjectCore = projectCore as ProjectCore;
 
 export const seedProjectStatus: ProjectStatus = {
-  ...(projectStatus as ProjectStatus),
-  currentLotId: 'LOT-02',
-  currentLotStatus: 'in_progress'
-};
+    ...(projectStatus as ProjectStatus),
+    currentLotId: 'LOT-02',
+    currentLotStatus: 'in_progress',
+    currentValidatedProofId: null,
+    currentLotCompletedAt: null
+  };
 
 export const seedCurrentLot: CurrentLot = {
   ...(currentLot as CurrentLot),

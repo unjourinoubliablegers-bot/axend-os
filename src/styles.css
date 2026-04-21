@@ -176,3 +176,36 @@ select {
   background: rgba(160, 160, 160, 0.16);
   border-color: rgba(160, 160, 160, 0.35);
 }
+.restart-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.restart-summary-card {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.restart-summary-card.wide {
+  grid-column: 1 / -1;
+}
+
+.restart-box {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.restart-box textarea {
+  min-height: 220px;
+}
+
+.restart-now {
+  font-size: 0.95rem;
+}

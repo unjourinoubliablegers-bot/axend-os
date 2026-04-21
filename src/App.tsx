@@ -100,6 +100,8 @@ const latestProofItemsCount = latestProof?.items?.length ?? 0;
   const blockerText = lot.blocker.trim() || 'Aucun';
   const proofExpectedText =
     lot.proofExpected.length > 0 ? lot.proofExpected.join(' • ') : 'Aucune';
+    const restartStatusLabel = LOT_STATUS_LABELS[lot.status];
+const lastValidatedProofText = status.lastValidatedProofAt ?? 'Aucune';
   function updateLot(field: keyof CurrentLot, value: string) {
     setLot((prev) => ({ ...prev, [field]: value }));
     if (field === 'blocker') {
@@ -390,12 +392,59 @@ const latestProofItemsCount = latestProof?.items?.length ?? 0;
   </ul>
 </Panel>
 
-        <Panel title="Restart Pack" subtitle="Reprise rapide">
-          <div className="restart-box">
-            <textarea value={restartPack} onChange={(e) => setRestartPack(e.target.value)} rows={10} />
-            <p><strong>Reprendre maintenant :</strong> {lot.nextAction}</p>
-          </div>
-        </Panel>
+<Panel title="Restart Pack" subtitle="Reprise rapide">
+  <div className="restart-summary-grid">
+    <div className="restart-summary-card">
+      <span className="meta-label">Projet</span>
+      <strong className="meta-value">{core.projectName}</strong>
+    </div>
+
+    <div className="restart-summary-card">
+      <span className="meta-label">Lot actif</span>
+      <strong className="meta-value">{lot.lotId}</strong>
+    </div>
+
+    <div className="restart-summary-card">
+      <span className="meta-label">Statut</span>
+      <div className="meta-badge-row">
+        <Badge value={restartStatusLabel} />
+      </div>
+    </div>
+
+    <div className="restart-summary-card wide">
+      <span className="meta-label">Prochaine action</span>
+      <strong className="meta-value multiline">
+        {lot.nextAction || 'Non définie'}
+      </strong>
+    </div>
+
+    <div className="restart-summary-card wide">
+      <span className="meta-label">Blocage</span>
+      <strong className="meta-value multiline">{blockerText}</strong>
+    </div>
+
+    <div className="restart-summary-card">
+      <span className="meta-label">Dernière preuve validée</span>
+      <strong className="meta-value multiline">{lastValidatedProofText}</strong>
+    </div>
+
+    <div className="restart-summary-card">
+      <span className="meta-label">Dernière sauvegarde</span>
+      <strong className="meta-value multiline">{lastSavedAt ?? 'Pas encore'}</strong>
+    </div>
+  </div>
+
+  <div className="restart-box">
+    <textarea
+      value={restartPack}
+      onChange={(e) => setRestartPack(e.target.value)}
+      rows={12}
+    />
+    <p className="restart-now">
+      <strong>Reprendre maintenant :</strong> {lot.nextAction || 'Définir la prochaine action'}
+    </p>
+  </div>
+</Panel>  
 
         <Panel title="Connexions outils" subtitle="Qui fait quoi dans le stack">
           <ul className="clean-list">

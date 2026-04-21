@@ -1,3 +1,10 @@
+export type LotStatus =
+  | 'clear'
+  | 'in_progress'
+  | 'blocked'
+  | 'ready_for_validation'
+  | 'validated';
+
 export type ProjectCore = {
   projectName: string;
   mission: string;
@@ -7,12 +14,10 @@ export type ProjectCore = {
   targetUser: string;
 };
 
-export type LotStatus = 'clear' | 'in_progress' | 'blocked' | 'ready_for_validation' | 'validated';
-
 export type ProjectStatus = {
   phase: string;
   currentLotId: string;
-  currentLotStatus: LotStatus | string;
+  currentLotStatus: LotStatus;
   nextMilestone: string;
   lastValidatedProofAt: string | null;
 };
@@ -22,7 +27,7 @@ export type CurrentLot = {
   title: string;
   goal: string;
   definitionOfDone: string[];
-  status: LotStatus | string;
+  status: LotStatus;
   nextAction: string;
   proofExpected: string[];
   blocker: string;
@@ -40,7 +45,7 @@ export type ProofEntry = {
   id: string;
   lotId: string;
   kind: string;
-  status: ProofStatus | string;
+  status: ProofStatus;
   path: string;
   summary: string;
   createdAt?: string;

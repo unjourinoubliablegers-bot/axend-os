@@ -2,12 +2,18 @@ import { useEffect, useMemo, useState } from 'react';
 import { Panel, Badge } from './components';
 import { loadAppState, loadRestartPack, persistAppState, persistRestartPack } from './lib/storage';
 import { seedCurrentLot, seedProjectCore, seedProjectStatus, seedProofLog } from './seed';
-import type { CurrentLot, ProjectCore, ProjectStatus, ProofLog } from './types';
+import type { CurrentLot, ProjectCore, ProjectStatus, ProofLog, LotStatus } from './types';
 
 const EMPTY_RESTART = `Etat fiable : starter runnable présent.
 Ce qui reste : installer, vérifier, lancer, commencer le vrai lot.
 Attention : ne pas ouvrir un autre lot avant preuve.`;
-
+const LOT_STATUS_LABELS: Record<LotStatus, string> = {
+  clear: 'Clair',
+  in_progress: 'En cours',
+  blocked: 'Bloqué',
+  ready_for_validation: 'Prêt à valider',
+  validated: 'Validé'
+};
 function buildRestartPack(projectName: string, lotTitle: string, nextAction: string, blocker: string, lastValidatedProofAt: string | null) {
   return [
     `# RESTART PACK`,
@@ -94,7 +100,20 @@ export default function App() {
     if (field === 'blocker') {
       setStatus((prev) => ({
         ...prev,
-        currentLotStatus: value.trim() ? 'blocked' : prev.currentLotStatus === 'blocked' ? 'in_progress' : prev.currentLotStatus
+        currentLotStatus: value.trim()
+          ? 'blocked'
+          : prev.currentLotStatus === 'blocked'
+            ? 'in_progress'
+            : prev.currentLotStatus
+      }));
+    
+      setLot((prev) => ({
+        ...prev,
+        status: value.trim()
+          ? 'blocked'
+          : prev.status === 'blocked'
+            ? 'in_progress'
+            : prev.status
       }));
     }
   }
@@ -168,7 +187,7 @@ export default function App() {
           </div>
           <div className="metric">
             <span>Statut</span>
-            <Badge value={status.currentLotStatus} />
+            <Badge value={LOT_STATUS_LABELS[status.currentLotStatus]} />
           </div>
           <div className="metric">
             <span>Stockage</span>
@@ -212,7 +231,7 @@ export default function App() {
     <div className="lot-summary-card">
       <span className="meta-label">Statut</span>
       <div className="meta-badge-row">
-        <Badge value={lot.status} />
+      <Badge value={LOT_STATUS_LABELS[lot.status]} />
       </div>
     </div>
 
@@ -241,7 +260,23 @@ export default function App() {
     <label>Titre lot</label>
     <input value={lot.title} onChange={(e) => updateLot('title', e.target.value)} />
   </div>
-
+  <div className="field">
+  <label>Statut du lot</label>
+  <select
+    value={lot.status}
+    onChange={(e) => {
+      const nextStatus = e.target.value as LotStatus;
+      setLot((prev) => ({ ...prev, status: nextStatus }));
+      setStatus((prev) => ({ ...prev, currentLotStatus: nextStatus }));
+    }}
+  >
+    <option value="clear">Clair</option>
+    <option value="in_progress">En cours</option>
+    <option value="blocked">Bloqué</option>
+    <option value="ready_for_validation">Prêt à valider</option>
+    <option value="validated">Validé</option>
+  </select>
+</div>
   <div className="field">
     <label>Objectif du lot</label>
     <textarea value={lot.goal} onChange={(e) => updateLot('goal', e.target.value)} />

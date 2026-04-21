@@ -14,6 +14,14 @@ const LOT_STATUS_LABELS: Record<LotStatus, string> = {
   ready_for_validation: 'Prêt à valider',
   validated: 'Validé'
 };
+function getNextLotId(currentLotId: string) {
+  const match = currentLotId.match(/^LOT-(\d+)$/);
+  if (!match) return 'LOT-01';
+
+  const currentNumber = Number(match[1]);
+  const nextNumber = currentNumber + 1;
+  return `LOT-${String(nextNumber).padStart(2, '0')}`;
+}
 function buildRestartPack(projectName: string, lotTitle: string, nextAction: string, blocker: string, lastValidatedProofAt: string | null) {
   return [
     `# RESTART PACK`,
@@ -192,7 +200,31 @@ const lastValidatedProofText = status.lastValidatedProofAt ?? 'Aucune';
       currentLotCompletedAt: validatedAt
     }));
   }
-
+  function prepareNextLot() {
+    const nextLotId = getNextLotId(lot.lotId);
+  
+    setLot((prev) => ({
+      ...prev,
+      lotId: nextLotId,
+      title: `${nextLotId} à définir`,
+      goal: '',
+      definitionOfDone: [],
+      status: 'clear',
+      nextAction: 'Définir le prochain lot',
+      proofExpected: [],
+      blocker: '',
+      filesInScope: []
+    }));
+  
+    setStatus((prev) => ({
+      ...prev,
+      currentLotId: nextLotId,
+      currentLotStatus: 'clear',
+      currentValidatedProofId: null,
+      currentLotCompletedAt: null
+    }));
+  }
+ 
   function resetToSeed() {
     setCore(seedProjectCore);
     setStatus(seedProjectStatus);
@@ -200,7 +232,6 @@ const lastValidatedProofText = status.lastValidatedProofAt ?? 'Aucune';
     setProof(seedProofLog);
     setRestartPack(EMPTY_RESTART);
   }
-
   return (
     <div className="app-shell">
       <header className="hero">
@@ -333,6 +364,11 @@ const lastValidatedProofText = status.lastValidatedProofAt ?? 'Aucune';
       <span key={file} className="chip">{file}</span>
     ))}
   </div>
+  {lot.status === 'validated' ? (
+  <div className="button-row">
+    <button onClick={prepareNextLot}>Préparer le lot suivant</button>
+  </div>
+) : null}
 </Panel>
         <Panel title="Definition of Done" subtitle="Le lot n'est pas fini sans critères clairs">
           <ol className="clean-list">
@@ -488,3 +524,4 @@ const lastValidatedProofText = status.lastValidatedProofAt ?? 'Aucune';
     </div>
   );
 }
+0

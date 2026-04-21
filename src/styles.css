@@ -209,3 +209,22 @@ select {
 .restart-now {
   font-size: 0.95rem;
 }
+.resume-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.resume-summary-card {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.resume-summary-card.wide {
+  grid-column: 1 / -1;
+}

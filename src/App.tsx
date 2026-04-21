@@ -215,12 +215,17 @@ const lastValidatedProofText = status.lastValidatedProofAt ?? 'Aucune';
             <textarea value={core.targetUser} onChange={(e) => setCore({ ...core, targetUser: e.target.value })} />
           </div>
           <ul className="clean-list">
-            <li><strong>Phase :</strong> {status.phase}</li>
-            <li><strong>Lot actif :</strong> {status.currentLotId}</li>
-            <li><strong>Prochaine action :</strong> {lot.nextAction}</li>
-            <li><strong>Dernière preuve validée :</strong> {status.lastValidatedProofAt ?? 'Aucune'}</li>
-            <li><strong>Dernière sauvegarde :</strong> {lastSavedAt ?? 'Pas encore'}</li>
-          </ul>
+  <li><strong>Phase :</strong> {status.phase}</li>
+  <li><strong>Lot actif :</strong> {status.currentLotId}</li>
+  <li>
+    <strong>Statut :</strong>{' '}
+    <Badge value={LOT_STATUS_LABELS[status.currentLotStatus]} />
+  </li>
+  <li><strong>Santé du lot :</strong> {health}/5</li>
+  <li><strong>Prochaine action :</strong> {lot.nextAction || 'Non définie'}</li>
+  <li><strong>Dernière preuve validée :</strong> {status.lastValidatedProofAt ?? 'Aucune'}</li>
+  <li><strong>Dernière sauvegarde :</strong> {lastSavedAt ?? 'Pas encore'}</li>
+</ul>
         </Panel>
 
         <Panel title="Lot actif" subtitle="Un seul lot, un seul cap">

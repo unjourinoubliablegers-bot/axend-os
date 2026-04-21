@@ -15,12 +15,47 @@ export function Panel({ title, subtitle, children }: PropsWithChildren<{ title: 
 }
 
 export function Badge({ value }: { value: string }) {
-  const normalized = value.toLowerCase();
+  const normalized = value.toLowerCase().trim();
   const cls = ['badge'];
-  if (normalized === 'validated' || normalized === 'validé') cls.push('success');
-  if (normalized === 'blocked' || normalized === 'bloqué') cls.push('danger');
-  if (normalized === 'clear' || normalized === 'clair') cls.push('info');
-  if (normalized === 'ready_for_validation') cls.push('warning');
-  if (normalized === 'in_progress') cls.push('neutral');
+
+  if (
+    normalized === 'validated' ||
+    normalized === 'validé'
+  ) {
+    cls.push('success');
+  } else if (
+    normalized === 'blocked' ||
+    normalized === 'bloqué'
+  ) {
+    cls.push('danger');
+  } else if (
+    normalized === 'clear' ||
+    normalized === 'clair'
+  ) {
+    cls.push('info');
+  } else if (
+    normalized === 'ready_for_validation' ||
+    normalized === 'prêt à valider'
+  ) {
+    cls.push('warning');
+  } else if (
+    normalized === 'in_progress' ||
+    normalized === 'en cours'
+  ) {
+    cls.push('neutral');
+  } else if (
+    normalized === 'pending' ||
+    normalized === 'en attente'
+  ) {
+    cls.push('warning');
+  } else if (
+    normalized === 'rejected' ||
+    normalized === 'rejeté'
+  ) {
+    cls.push('danger');
+  } else {
+    cls.push('neutral');
+  }
+
   return <span className={cls.join(' ')}>{value}</span>;
 }

@@ -1,16 +1,56 @@
 {
   "entries": [
     {
-      "id": "proof-seed-001",
-      "lotId": "LOT-00",
-      "kind": "seed",
-      "status": "pending",
+      "id": "proof-2026-04-22-lot-05",
+      "lotId": "LOT-05",
+      "kind": "manual",
+      "status": "validated",
       "path": "axend/proofs/latest-proof.json",
-      "summary": "Ajouter ici la première preuve réelle.",
+      "summary": "2026-04-22 — LOT-05 preuve minimale: pnpm type-check, pnpm build, pnpm exec vite --host 127.0.0.1 --port 1421; app web lancable, Today/Resume/Copilot visibles, persistance locale simple OK apres rechargement; limites: web simple sans Tauri, preuve minimale non audit complet; prochaine action: preparer le lot suivant sans rouvrir le perimetre.",
       "items": [
         {
-          "label": "Déposer une première preuve réelle",
-          "status": "pending"
+          "label": "Commande lancee: pnpm type-check",
+          "status": "done"
+        },
+        {
+          "label": "Commande lancee: pnpm build",
+          "status": "done"
+        },
+        {
+          "label": "Commande lancee: pnpm exec vite --host 127.0.0.1 --port 1421",
+          "status": "done"
+        },
+        {
+          "label": "Resultat observe: app lancable en web",
+          "status": "done"
+        },
+        {
+          "label": "Resultat observe: Today visible",
+          "status": "done"
+        },
+        {
+          "label": "Resultat observe: Resume visible",
+          "status": "done"
+        },
+        {
+          "label": "Resultat observe: Copilot visible",
+          "status": "done"
+        },
+        {
+          "label": "Resultat observe: persistance locale simple fonctionnelle apres rechargement",
+          "status": "done"
+        },
+        {
+          "label": "Limite connue: validation en mode web simple, sans Tauri",
+          "status": "done"
+        },
+        {
+          "label": "Limite connue: preuve minimale, pas audit complet",
+          "status": "done"
+        },
+        {
+          "label": "Prochaine action: preparer le lot suivant sans rouvrir le perimetre",
+          "status": "done"
         }
       ]
     }

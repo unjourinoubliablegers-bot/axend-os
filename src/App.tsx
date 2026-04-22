@@ -114,7 +114,9 @@ export default function App() {
   .find((entry) => entry.status === 'validated');
 
 const latestProofItemsCount = latestProof?.items?.length ?? 0;
+const closingProofId = status.currentValidatedProofId ?? 'Aucune';
 const closedLots = status.closedLots ?? [];
+const closingDate = status.currentLotCompletedAt ?? 'Non clôturé';
   const blockerText = lot.blocker.trim() || 'Aucun';
   const proofExpectedText =
     lot.proofExpected.length > 0 ? lot.proofExpected.join(' • ') : 'Aucune';
@@ -296,6 +298,13 @@ const lastValidatedProofText = status.lastValidatedProofAt ?? 'Aucune';
         </Panel>
 
         <Panel title="Resume" subtitle="Etat court du shell en cours">
+          <ul className="clean-list">
+            <li><strong>Lot actif :</strong> {lot.lotId} — {lot.title}</li>
+            <li><strong>Statut :</strong> <Badge value={LOT_STATUS_LABELS[status.currentLotStatus]} /></li>
+            <li><strong>Prochaine action :</strong> {lot.nextAction || 'Non définie'}</li>
+            <li><strong>Blocage :</strong> {blockerText}</li>
+            <li><strong>Dernière sauvegarde :</strong> {lastSavedAt ?? 'Pas encore'}</li>
+          </ul>
           <div className="field">
             <label>Objectif principal</label>
             <textarea value={core.primaryObjective} onChange={(e) => setCore({ ...core, primaryObjective: e.target.value })} />
@@ -306,11 +315,11 @@ const lastValidatedProofText = status.lastValidatedProofAt ?? 'Aucune';
           </div>
           <ul className="clean-list">
             <li><strong>Phase :</strong> {status.phase}</li>
-            <li><strong>Lot actif :</strong> {lot.lotId} — {lot.title}</li>
-            <li><strong>Statut :</strong> <Badge value={LOT_STATUS_LABELS[status.currentLotStatus]} /></li>
             <li><strong>Santé du lot :</strong> {health}/5</li>
             <li><strong>Objectif du lot :</strong> {lot.goal || 'Non défini'}</li>
-            <li><strong>Prochaine action :</strong> {lot.nextAction || 'Non définie'}</li>
+            <li><strong>Dernière preuve validée :</strong> {lastValidatedProofText}</li>
+            <li><strong>Preuve de fermeture :</strong> {closingProofId}</li>
+            <li><strong>Lot clôturé le :</strong> {closingDate}</li>
           </ul>
         </Panel>
         <Panel title="Copilot" subtitle="Assistant d’exécution du lot actif">

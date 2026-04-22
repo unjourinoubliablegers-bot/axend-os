@@ -288,6 +288,15 @@ const lastValidatedProofText = status.lastValidatedProofAt ?? 'Aucune';
       </header>
 
       <main className="grid">
+        <Panel title="Today" subtitle="Priorité opérationnelle du jour">
+          <ul className="clean-list">
+            <li><strong>Lot actif :</strong> {lot.lotId}</li>
+            <li><strong>Statut :</strong> <Badge value={LOT_STATUS_LABELS[lot.status]} /></li>
+            <li><strong>Action du jour :</strong> {lot.nextAction || 'Non définie'}</li>
+            <li><strong>Blocage :</strong> {blockerText}</li>
+          </ul>
+        </Panel>
+
         <Panel title="Resume" subtitle="Vision instantanée du projet">
           <div className="field">
             <label>Objectif principal</label>
@@ -311,6 +320,14 @@ const lastValidatedProofText = status.lastValidatedProofAt ?? 'Aucune';
 <li><strong>Lot clôturé le :</strong> {closingDate}</li>
   <li><strong>Dernière sauvegarde :</strong> {lastSavedAt ?? 'Pas encore'}</li>
 </ul>
+        </Panel>
+        <Panel title="Copilot" subtitle="Assistant d’exécution du lot actif">
+          <ul className="clean-list">
+            <li><strong>Objectif du lot :</strong> {lot.goal || 'Non défini'}</li>
+            <li><strong>Definition of Done :</strong> {lot.definitionOfDone.length}</li>
+            <li><strong>Preuves attendues :</strong> {lot.proofExpected.length}</li>
+            <li><strong>Instruction :</strong> rester dans le périmètre du lot actif.</li>
+          </ul>
         </Panel>
 
         <Panel title="Lot actif" subtitle="Un seul lot, un seul cap">
@@ -573,4 +590,3 @@ const lastValidatedProofText = status.lastValidatedProofAt ?? 'Aucune';
     </div>
   );
 }
-0

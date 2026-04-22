@@ -1,5 +1,24 @@
 # AXEND OS — Runnable Starter V8 Finalized
 
+## Reprise minimale confirmée (LOT-05)
+
+### Quoi lire en premier
+- Ce README (section "Reprise minimale confirmée (LOT-05)").
+
+### Quoi lancer
+```powershell
+pnpm type-check
+pnpm build
+pnpm exec vite --host 127.0.0.1 --port 1421
+```
+
+### Quoi vérifier
+- app web lançable
+- Today, Resume, Copilot visibles
+- persistance locale simple OK après reload
+
+Note : Tauri et les autres scripts avancés sont non confirmés à ce stade.
+
 Ce dossier est une base applicative **runnable** pour AXEND, avec :
 - UI React + TypeScript + Vite
 - backend Tauri minimal

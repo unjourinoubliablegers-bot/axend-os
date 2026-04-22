@@ -114,9 +114,7 @@ export default function App() {
   .find((entry) => entry.status === 'validated');
 
 const latestProofItemsCount = latestProof?.items?.length ?? 0;
-const closingProofId = status.currentValidatedProofId ?? 'Aucune';
 const closedLots = status.closedLots ?? [];
-const closingDate = status.currentLotCompletedAt ?? 'Non clôturé';
   const blockerText = lot.blocker.trim() || 'Aucun';
   const proofExpectedText =
     lot.proofExpected.length > 0 ? lot.proofExpected.join(' • ') : 'Aucune';
@@ -297,7 +295,7 @@ const lastValidatedProofText = status.lastValidatedProofAt ?? 'Aucune';
           </ul>
         </Panel>
 
-        <Panel title="Resume" subtitle="Vision instantanée du projet">
+        <Panel title="Resume" subtitle="Etat court du shell en cours">
           <div className="field">
             <label>Objectif principal</label>
             <textarea value={core.primaryObjective} onChange={(e) => setCore({ ...core, primaryObjective: e.target.value })} />
@@ -307,19 +305,13 @@ const lastValidatedProofText = status.lastValidatedProofAt ?? 'Aucune';
             <textarea value={core.targetUser} onChange={(e) => setCore({ ...core, targetUser: e.target.value })} />
           </div>
           <ul className="clean-list">
-  <li><strong>Phase :</strong> {status.phase}</li>
-  <li><strong>Lot actif :</strong> {status.currentLotId}</li>
-  <li>
-    <strong>Statut :</strong>{' '}
-    <Badge value={LOT_STATUS_LABELS[status.currentLotStatus]} />
-  </li>
-  <li><strong>Santé du lot :</strong> {health}/5</li>
-  <li><strong>Prochaine action :</strong> {lot.nextAction || 'Non définie'}</li>
-  <li><strong>Dernière preuve validée :</strong> {status.lastValidatedProofAt ?? 'Aucune'}</li>
-  <li><strong>Preuve de fermeture :</strong> {closingProofId}</li>
-<li><strong>Lot clôturé le :</strong> {closingDate}</li>
-  <li><strong>Dernière sauvegarde :</strong> {lastSavedAt ?? 'Pas encore'}</li>
-</ul>
+            <li><strong>Phase :</strong> {status.phase}</li>
+            <li><strong>Lot actif :</strong> {lot.lotId} — {lot.title}</li>
+            <li><strong>Statut :</strong> <Badge value={LOT_STATUS_LABELS[status.currentLotStatus]} /></li>
+            <li><strong>Santé du lot :</strong> {health}/5</li>
+            <li><strong>Objectif du lot :</strong> {lot.goal || 'Non défini'}</li>
+            <li><strong>Prochaine action :</strong> {lot.nextAction || 'Non définie'}</li>
+          </ul>
         </Panel>
         <Panel title="Copilot" subtitle="Assistant d’exécution du lot actif">
           <ul className="clean-list">
@@ -504,7 +496,7 @@ const lastValidatedProofText = status.lastValidatedProofAt ?? 'Aucune';
   </ul>
 </Panel>
 
-<Panel title="Restart Pack" subtitle="Reprise rapide">
+<Panel title="Bloc de continuité" subtitle="Reprendre sans ambiguïté">
   <div className="restart-summary-grid">
     <div className="restart-summary-card">
       <span className="meta-label">Projet</span>
@@ -547,6 +539,13 @@ const lastValidatedProofText = status.lastValidatedProofAt ?? 'Aucune';
   </div>
 
   <div className="restart-box">
+    <ul className="clean-list">
+      <li><strong>Continuer sur :</strong> {lot.lotId} — {lot.title}</li>
+      <li><strong>Action immédiate :</strong> {lot.nextAction || 'Non définie'}</li>
+      <li><strong>Blocage actuel :</strong> {blockerText}</li>
+      <li><strong>Dernière preuve validée :</strong> {lastValidatedProofText}</li>
+      <li><strong>Dernière sauvegarde :</strong> {lastSavedAt ?? 'Pas encore'}</li>
+    </ul>
     <textarea
       value={restartPack}
       onChange={(e) => setRestartPack(e.target.value)}
